@@ -1,7 +1,5 @@
 import { useAuth } from "../../../Context/AuthContext";
 
-
-
 const TutorDashboard = () => {
   const { user } = useAuth();
 

@@ -1,4 +1,4 @@
-// src/pages/public/Contact.jsx
+
 const Contact = () => {
   return (
     <div className="container mx-auto py-20 px-4 text-center">
