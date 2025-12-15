@@ -1,4 +1,4 @@
-// src/pages/dashboard/admin/AdminDashboard.jsx
+
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 
