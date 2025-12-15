@@ -1,16 +1,43 @@
-# React + Vite
+প্রজেক্ট সম্পর্কে
+eTuitionBD হলো একটি ওয়েব অ্যাপ্লিকেশন যেখানে student তাদের tuitions শেয়ার করতে পারে এবং অন্যদের tuitions new buy করতে পারে।
+এই প্ল্যাটফর্মের মাধ্যমে একজন ইউজার নিজের প্রোফাইল তৈরি করে নিজের বিস্নেস দার করতে পারে এবং অন্যদের সঙ্গে তার tuitions share করতে পারে।
+ব্যবহৃত টেকনোলজি ও প্যাকেজসমূহ
+Frontend:
+React.js — পুরো অ্যাপের ইউজার ইন্টারফেস তৈরি করার জন্য।
+React Router DOM — পেজ নেভিগেশনের জন্য।
+Tailwind CSS — সুন্দর ও রেসপনসিভ ডিজাইন তৈরিতে।
+React Spring — Smooth ও physics-based অ্যানিমেশনের জন্য।
+React Hot Toast — ইউজারদের জন্য সুন্দর নোটিফিকেশন দেখানোর জন্য।
+Swiper.js — Hero section।
+sweetalert2
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Backend & Authentication:
+Firebase Authentication — ইউজার লগইন, রেজিস্ট্রেশন, ও প্রোফাইল ম্যানেজমেন্টের জন্য।
 
-Currently, two official plugins are available:
+মূল ফিচারসমূহ
+tuition লিস্ট দেখা ও বিস্তারিত দেখা
+tutor রিকোয়েস্ট করা
+ইউজার রেজিস্ট্রেশন ও লগইন
+React Spring দিয়ে Smooth Animation
+Toast notification system
+Responsive design (mobile-first)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+প্যাকেজ ইনস্টলেশন
+npm i recharts tailwindcss@latest @tailwindcss/vite@latest daisyui@latest lucide-react react-icons react-toastify sweetalert2 lottie-react react-leaflet@next react-spinners react-hot-toast react-router-dom @tanstack/react-query react-hook-form firebase axios framer-motion @tanstack/react-query-devtools swiper
+@headlessui/react
 
-## React Compiler
+backend
+npm i cors dotenv express firebase-admin mongodb @stripe/react-stripe-js @stripe/stripe-js
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+Muhammad Sobuj Hossain
+Live Link:
+
+---
+
+## Admin email
+	admin@gmail.com
+  ## password
+  123456
+
