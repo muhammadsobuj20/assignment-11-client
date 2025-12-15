@@ -27,7 +27,7 @@ const Home = () => {
         initial={{ opacity: 0, y: 50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="hero min-h-screen bg-gradient-to-br from-primary to-secondary text-white"
+        className="hero min-h-screen bg-linear-to-br from-primary to-secondary text-white"
       >
         <div className="hero-content text-center">
           <div className="max-w-2xl">
@@ -42,8 +42,8 @@ const Home = () => {
                 Browse Tuitions
               </Link>
               <Link
-                to="/register"
-                className="btn btn-outline btn-lg text-white"
+                to="/signup?role=tutor"
+                className="btn btn-outline btn-lg text-white hover:bg-cyan-800 hover:text-white"
               >
                 Become a Tutor
               </Link>

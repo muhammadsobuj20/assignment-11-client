@@ -39,12 +39,11 @@ import Reports from "./pages/dashboard/admin/Reports";
 import Profile from "./pages/public/Profile";
 
 //payment pages
+import PaymentCancelled from "./pages/payments/PaymentCancelled";
+import Payment from "./pages/payments/Payment";
 import PaymentSuccess from "./pages/payments/PaymentSuccess";
-import PaymentFailed from "./pages/payments/PaymentFailed";
-import PaymentCancel from "./pages/payments/PaymentCancel";
 import TutorProfile from "./pages/public/TutorProfile";
 import Coverage from "./components/shared/Coverage";
-import Reviews from "./pages/Reviews/Reviews";
 
 const App = () => {
   return (
@@ -57,7 +56,6 @@ const App = () => {
         <Route path="tutors" element={<Tutors />} />
         <Route path="/tutor/:id" element={<TutorProfile />} />
         <Route path="/coverage" element={<Coverage />} />
-        <Route path="/reviews" element={<Reviews />} />
 
         <Route
           path="profile"
@@ -71,10 +69,10 @@ const App = () => {
       </Route>
 
       {/* Payment Routes */}
+      <Route path="payment" element={<Payment />} />
       <Route path="payment/success" element={<PaymentSuccess />} />
-      <Route path="payment/failed" element={<PaymentFailed />} />
-      <Route path="payment/cancel" element={<PaymentCancel />} />
-
+      <Route path="payment/cancel" element={<PaymentCancelled />} />
+      <Route path="/payment" element={<Payment />} />
       {/* Auth Routes */}
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />

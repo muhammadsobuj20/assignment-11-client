@@ -12,11 +12,10 @@ const TuitionDetails = () => {
   const elements = useElements();
 
   const studentEmail = localStorage.getItem("email");
-  const token = localStorage.getItem("access-token"); // ⭐ FIXED TOKEN KEY
+  const token = localStorage.getItem("access-token");
 
-  // ========================
   // Load Tuition Details
-  // ========================
+
   useEffect(() => {
     axios
       .get(`${import.meta.env.VITE_API_URL}/tuitions/${id}`, {
@@ -26,15 +25,14 @@ const TuitionDetails = () => {
       .catch(() => toast.error("Unauthorized or Not Found"));
   }, [id, token]);
 
-  // ========================
   // Generate Client Secret
-  // ========================
+
   const generatePayment = async () => {
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/create-payment-intent`,
         {
-          price: tuition.budget, // ⭐ FIXED field name
+          price: tuition.budget,
           studentEmail,
           tutorEmail: tuition.tutorEmail,
           tuitionId: tuition._id,
@@ -53,9 +51,8 @@ const TuitionDetails = () => {
     }
   };
 
-  // ========================
   // Confirm Payment
-  // ========================
+
   const handlePay = async (e) => {
     e.preventDefault();
     if (!stripe || !elements) return;
@@ -65,7 +62,13 @@ const TuitionDetails = () => {
     const { paymentIntent, error } = await stripe.confirmCardPayment(
       clientSecret,
       {
-        payment_method: { card },
+        payment_method: {
+          card,
+          billing_details: {
+            name: "Student Payment",
+            email: studentEmail,
+          },
+        },
       }
     );
 
