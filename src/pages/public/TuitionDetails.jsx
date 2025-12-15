@@ -104,7 +104,7 @@ const TuitionDetails = () => {
         {tuition.subject} - Class {tuition.class}
       </h2>
       <p>Location: {tuition.location}</p>
-      <p>Budget: ৳{tuition.budget}</p>
+      <p>Budget: ${tuition.budget}</p>
       <p>Status: {tuition.status}</p>
 
       {tuition.status !== "paid" && (
