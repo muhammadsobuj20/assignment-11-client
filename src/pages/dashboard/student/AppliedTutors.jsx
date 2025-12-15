@@ -23,7 +23,7 @@ const AppliedTutors = () => {
     },
   });
 
-  // Mutation for approving and creating payment
+ 
   const approveMutation = useMutation({
     mutationFn: async (applicationId) => {
       const res = await axios.post(
@@ -37,7 +37,7 @@ const AppliedTutors = () => {
           },
         }
       );
-      return res.data; // { sessionId: "cs_test_..." }
+      return res.data; 
     },
     onSuccess: async (data) => {
       const stripe = await stripePromise;
@@ -149,7 +149,7 @@ const AppliedTutors = () => {
                           )}
                         </button>
                         <button
-                          // onClick={() => handleReject(app._id)}
+                    
                           className="btn btn-error btn-outline btn-md"
                         >
                           Reject
