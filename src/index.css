@@ -1,12 +1,15 @@
-@import 'tailwindcss';
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Slab:ital,wght@0,100..700;1,100..700&family=Libre+Bodoni:ital,wght@0,400..700;1,400..700&family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
+
+body {
+  font-family: "Libre Bodoni", serif;
+}
+
+@import "tailwindcss";
 @plugin "daisyui";
-
-
-
 
 @plugin "daisyui/theme" {
   name: "light";
   default: true;
-  --color-primary: #31ADAC;
+  --color-primary: #31adac;
   --color-secondary: teal;
 }
