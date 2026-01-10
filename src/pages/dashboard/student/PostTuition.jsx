@@ -59,21 +59,21 @@ const PostTuition = () => {
             {...register("subject")}
             defaultValue={tuition?.subject}
             placeholder="Subject"
-            className="input input-bordered"
+           className="w-full px-3 py-2 border rounded-md border-primary focus:outline-cyan-500 text-gray-400"
             required
           />
           <input
             {...register("class")}
             defaultValue={tuition?.class}
             placeholder="Class (e.g., 10)"
-            className="input input-bordered"
+           className="w-full px-3 py-2 border rounded-md border-primary focus:outline-cyan-500 text-gray-400"
             required
           />
           <input
             {...register("location")}
             defaultValue={tuition?.location}
             placeholder="Location"
-            className="input input-bordered"
+           className="w-full px-3 py-2 border rounded-md border-primary focus:outline-cyan-500 text-gray-400"
             required
           />
           <input
@@ -81,27 +81,27 @@ const PostTuition = () => {
             type="number"
             defaultValue={tuition?.budget}
             placeholder="Budget (BDT)"
-            className="input input-bordered"
+            className="w-full px-3 py-2 border rounded-md border-primary focus:outline-cyan-500 text-gray-400"
             required
           />
           <input
             {...register("daysPerWeek")}
             defaultValue={tuition?.daysPerWeek}
             placeholder="Days/Week"
-            className="input input-bordered"
+            className="w-full px-3 py-2 border rounded-md border-primary focus:outline-cyan-500 text-gray-400"
           />
           <input
             {...register("studentGender")}
             defaultValue={tuition?.studentGender}
             placeholder="Student Gender"
-            className="input input-bordered"
+           className="w-full px-3 py-2 border rounded-md border-primary focus:outline-cyan-500 text-gray-400"
           />
         </div>
         <textarea
           {...register("requirements")}
           defaultValue={tuition?.requirements}
           placeholder="Requirements"
-          className="textarea textarea-bordered w-full"
+          className="textarea border rounded-md border-primary focus:outline-cyan-500 text-gray-400 w-full"
           rows="4"
         ></textarea>
         <button type="submit" className="btn btn-primary btn-block">

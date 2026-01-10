@@ -7,6 +7,9 @@ import ErrorPage from "./components/ui/ErrorPage";
 
 // Public Pages
 import Home from "./pages/public/Home";
+import About from "./pages/public/About";
+import Blog from "./pages/public/Blog";
+import Help from "./pages/public/Help";
 import Tuitions from "./pages/public/Tuitions";
 import TuitionDetails from "./pages/public/TuitionDetails";
 import Tutors from "./pages/public/Tutors";
@@ -51,6 +54,9 @@ const App = () => {
       {/* Public Routes */}
       <Route path="/" element={<MainLayout />}>
         <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="blog" element={<Blog />} />
+        <Route path="help" element={<Help />} />
         <Route path="tuitions" element={<Tuitions />} />
         <Route path="tuition/:id" element={<TuitionDetails />} />
         <Route path="tutors" element={<Tutors />} />

@@ -1,116 +1,131 @@
+import React from "react";
+import { motion } from "framer-motion";
+
+const tutorsData = [
+  {
+    name: "John Doe",
+    subjects: "Math, Physics, Chemistry",
+    experience: "5+ years experience",
+    rating: 5,
+    photoURL: "",
+  },
+  {
+    name: "Jane Smith",
+    subjects: "English, History",
+    experience: "4+ years experience",
+    rating: 4,
+    photoURL: "",
+  },
+  {
+    name: "Michael Lee",
+    subjects: "Biology, Chemistry",
+    experience: "6+ years experience",
+    rating: 5,
+    photoURL: "",
+  },
+  {
+    name: "Sara Khan",
+    subjects: "Math, ICT",
+    experience: "3+ years experience",
+    rating: 4,
+    photoURL: "",
+  },
+  {
+    name: "Ali Rahman",
+    subjects: "Economics, Accounting",
+    experience: "7+ years experience",
+    rating: 5,
+    photoURL: "",
+  },
+  {
+    name: "Fatima Noor",
+    subjects: "English, Bangla",
+    experience: "5+ years experience",
+    rating: 5,
+    photoURL: "",
+  },
+];
+
+// Framer-motion variants
+const fadeInUp = {
+  initial: { opacity: 0, y: 30 },
+  animate: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
+};
+
+const staggerContainer = {
+  initial: {},
+  animate: { transition: { staggerChildren: 0.2 } },
+};
 
 const Tutors = () => {
   return (
-    <div className="container mx-auto py-20 px-4">
-      <h1 className="text-4xl font-bold text-center mb-10">Our Verified Tutors</h1>
-      <p className="text-center text-xl mb-16">Coming soon! Browse top tutors by subject and location.</p>
+    <motion.div
+      className="container mx-auto py-20 px-4"
+      initial="initial"
+      whileInView="animate"
+      viewport={{ once: true }}
+      variants={staggerContainer}
+    >
+      <motion.h1
+        className="text-4xl font-bold text-center mb-4"
+        variants={fadeInUp}
+      >
+        Our Verified Tutors
+      </motion.h1>
+      <motion.p
+        className="text-center text-xl text-gray-500 mb-16"
+        variants={fadeInUp}
+      >
+        Browse top tutors by subject and location.
+      </motion.p>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className="card bg-base-100 shadow-xl">
-            <div className="card-body text-center">
-              <div className="avatar">
-                <div className="w-24 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 mx-auto">
-                  <div className="bg-gray-300 w-full h-full rounded-full"></div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+        {tutorsData.map((tutor, i) => (
+          <motion.div
+            key={i}
+            className="rounded-2xl shadow-lg p-6 text-center transition transform hover:scale-105 hover:shadow-2xl hover:shadow-primary"
+            variants={fadeInUp}
+          >
+            {/* Avatar */}
+            <div className="w-28 h-28 mx-auto rounded-full overflow-hidden ring ring-primary ring-offset-base-100 ring-offset-2 mb-4">
+              {tutor.photoURL ? (
+                <img
+                  src={tutor.photoURL}
+                  alt={tutor.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center text-2xl text-gray-400 font-bold">
+                  {tutor.name.charAt(0)}
                 </div>
-              </div>
-              <h3 className="text-xl font-bold mt-4">Tutor Name</h3>
-              <p>Math, Physics, Chemistry</p>
-              <p className="text-sm text-gray-500">5+ years experience</p>
-              <div className="rating rating-sm mt-2">
-                <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" checked readOnly />
-                <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" checked readOnly />
-                <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" checked readOnly />
-                <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" checked readOnly />
-                <input type="radio" name="rating-2" className="mask mask-star-2 bg-orange-400" checked readOnly />
-              </div>
+              )}
             </div>
-          </div>
+
+            <h3 className="text-xl font-semibold mb-1">{tutor.name}</h3>
+            <p className="text-gray-600 mb-1">{tutor.subjects}</p>
+            <p className="text-gray-400 text-sm mb-2">{tutor.experience}</p>
+
+            {/* Rating */}
+            <div className="flex justify-center space-x-1">
+              {[...Array(5)].map((_, idx) => (
+                <svg
+                  key={idx}
+                  className={`w-5 h-5 ${
+                    idx < tutor.rating ? "text-orange-400" : "text-gray-300"
+                  }`}
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.286 3.957a1 1 0 00.95.69h4.166c.969 0 1.371 1.24.588 1.81l-3.37 2.448a1 1 0 00-.364 1.118l1.287 3.957c.3.921-.755 1.688-1.54 1.118l-3.37-2.448a1 1 0 00-1.175 0l-3.37 2.448c-.784.57-1.838-.197-1.539-1.118l1.287-3.957a1 1 0 00-.364-1.118L2.068 9.384c-.783-.57-.38-1.81.588-1.81h4.166a1 1 0 00.95-.69l1.286-3.957z" />
+                </svg>
+              ))}
+            </div>
+          </motion.div>
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
 export default Tutors;
-
-
-
-
-// import { useQuery } from "@tanstack/react-query";
-
-// import { useState } from "react";
-
-// import TutorCard from "../../components/shared/TutorCard";
-// import axios from "axios";
-
-// const Tutors = () => {
-//   const [subject, setSubject] = useState("");
-//   const [location, setLocation] = useState("");
-
-//   const { data: tutors = [], isLoading, refetch } = useQuery({
-//     queryKey: ["tutors", subject, location],
-//     queryFn: async () => {
-//       const res = await axios.get(`/tutors`, {
-//         params: { subject, location },
-//       });
-//       return res.data;
-//     },
-//   });
-
-//   const handleFilter = () => {
-//     refetch();
-//   };
-
-//   return (
-//     <div className="container mx-auto py-20 px-4">
-//       <h1 className="text-4xl font-bold text-center mb-10">
-//         Our Verified Tutors
-//       </h1>
-
-//       {/* 🔍 Filter Section */}
-//       <div className="flex flex-col md:flex-row items-center gap-4 mb-10">
-//         <select
-//           className="select select-bordered w-full md:w-1/4"
-//           value={subject}
-//           onChange={(e) => setSubject(e.target.value)}
-//         >
-//           <option value="">All Subjects</option>
-//           <option>Math</option>
-//           <option>Physics</option>
-//           <option>Chemistry</option>
-//           <option>English</option>
-//           <option>Biology</option>
-//         </select>
-
-//         <input
-//           type="text"
-//           className="input input-bordered w-full md:w-1/4"
-//           placeholder="Location e.g. Dhaka"
-//           value={location}
-//           onChange={(e) => setLocation(e.target.value)}
-//         />
-
-//         <button onClick={handleFilter} className="btn btn-primary w-full md:w-auto">
-//           Search
-//         </button>
-//       </div>
-
-//       {isLoading ? (
-//         <p className="text-center text-xl">Loading tutors...</p>
-//       ) : tutors.length === 0 ? (
-//         <p className="text-center text-xl text-gray-500">
-//           No tutors found! Try another filter.
-//         </p>
-//       ) : (
-//         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-//           {tutors.map((tutor) => (
-//             <TutorCard key={tutor._id} tutor={tutor} />
-//           ))}
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Tutors;

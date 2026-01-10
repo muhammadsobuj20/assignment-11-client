@@ -27,8 +27,8 @@ const Coverage = () => {
   };
 
   return (
-    <div className="p-8">
-      <h2 className="text-5xl mb-6">We are available in 64 districts</h2>
+    <div className="p-8 -z-50">
+      <h2 className="text-5xl mb-6">We are <span className="text-cyan-500">available in 64</span> districts</h2>
 
       <form onSubmit={handleSearch} className="mb-4">
         <input

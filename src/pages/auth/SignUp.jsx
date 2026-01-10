@@ -6,14 +6,15 @@ import { TbFidgetSpinner } from "react-icons/tb";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../Context/AuthContext";
 import { imageUpload, saveOrUpdateUser } from "../../utils";
+import { Eye, EyeOff } from "lucide-react";
 
 const SignUp = () => {
   const { createUser, updateUserProfile, signInWithGoogle } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state || "/";
-
-  const [loading, setLoading] = useState(false); // Local loading state
+  const from = location.state?.from || "/";
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -26,242 +27,204 @@ const SignUp = () => {
     const { name, email, password, image } = data;
     const imageFile = image?.[0];
 
-    // Image validation (client side)
     if (!imageFile) {
       toast.error("Please upload a profile image");
       return;
     }
 
     setLoading(true);
-
     try {
-      let imageURL = "";
+      const imageURL = await imageUpload(imageFile);
 
-      // Upload image first
-      try {
-        imageURL = await imageUpload(imageFile);
-      } catch (uploadErr) {
-        console.error(uploadErr);
-        toast.error("Failed to upload image. Please try again.");
-        setLoading(false);
-        return;
-      }
-
-      // 1. Create user with email & password
+      // Create user
       await createUser(email, password);
-      
-      // 2. Save/Update user in database
-      await saveOrUpdateUser({
-        name,
-        email,
-        image: imageURL,
-      });
 
-      // 3. Update Firebase profile (displayName & photoURL)
+      // Update Firebase profile
       await updateUserProfile(name, imageURL);
+
+      // Save or update in DB
+      await saveOrUpdateUser({ name, email, image: imageURL });
 
       toast.success("Signup Successful!");
       reset();
       navigate(from, { replace: true });
     } catch (err) {
       console.error(err);
-      let errorMessage = err?.message || "Signup failed. Please try again.";
-
-      // Specific Firebase errors
+      let errorMsg = err?.message || "Signup failed";
       if (err.code === "auth/email-already-in-use") {
-        errorMessage = "This email is already registered. Please login.";
+        errorMsg = "Email already registered. Please login.";
       } else if (err.code === "auth/weak-password") {
-        errorMessage = "Password is too weak.";
+        errorMsg = "Password is too weak.";
       }
-
-      toast.error(errorMessage);
+      toast.error(errorMsg);
     } finally {
       setLoading(false);
     }
   };
 
-  // Handle Google Sign In
   const handleGoogleSignIn = async () => {
     setLoading(true);
     try {
       const { user } = await signInWithGoogle();
-
-      // Save or update user in database
       await saveOrUpdateUser({
         name: user?.displayName || "User",
         email: user?.email,
         image: user?.photoURL || "",
       });
-
       toast.success("Signup Successful with Google!");
       navigate(from, { replace: true });
     } catch (err) {
       console.error(err);
-      let errorMessage = err?.message || "Google sign in failed.";
-
-      if (err.code === "auth/popup-closed-by-user") {
-        errorMessage = "Sign in cancelled.";
-      }
-
-      toast.error(errorMessage);
+      toast.error(err?.message || "Google sign in failed.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-white">
-      <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
-        <div className="mb-8 text-center">
-          <h1 className="my-3 text-4xl font-bold">Sign Up</h1>
-          <p className="text-sm text-gray-400">Welcome to eTuitionBD</p>
+    <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-primary/10 to-secondary/10 p-4">
+      <div className="flex flex-col max-w-md w-full p-8 rounded-2xl shadow-2xl border-2 border-primary">
+        <div className="text-center mb-6">
+          <h1 className="text-3xl font-bold mb-1 text-primary">Sign Up</h1>
+          <p className="text-gray-500 text-sm">
+            Create your account at eTuitionBD
+          </p>
         </div>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="space-y-6"
-        >
-          <div className="space-y-4">
-            {/* Name */}
-            <div>
-              <label htmlFor="name" className="block mb-2 text-sm">
-                Name
-              </label>
-              <input
-                type="text"
-                id="name"
-                placeholder="Enter Your Name Here"
-                className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-cyan-500 bg-gray-200 text-gray-900"
-                {...register("name", {
-                  required: "Name is required",
-                  maxLength: {
-                    value: 30,
-                    message: "Name cannot exceed 30 characters",
-                  },
-                })}
-              />
-              {errors.name && (
-                <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
-              )}
-            </div>
-
-            {/* Profile Image */}
-            <div>
-              <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-700">
-                Profile Image <span className="text-red-500">*</span>
-              </label>
-              <input
-                type="file"
-                id="image"
-                accept="image/*"
-                className="block w-full text-sm text-gray-500
-                  file:mr-4 file:py-2 file:px-4
-                  file:rounded-md file:border-0
-                  file:text-sm file:font-semibold
-                  file:bg-cyan-50 file:text-cyan-700
-                  hover:file:bg-cyan-100
-                  bg-gray-100 border border-dashed border-cyan-300 rounded-md cursor-pointer
-                  focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400
-                  py-2"
-                {...register("image", {
-                  required: "Profile image is required",
-                })}
-              />
-              <p className="mt-1 text-xs text-gray-400">PNG, JPG or JPEG (max 2MB)</p>
-              {errors.image && (
-                <p className="text-red-500 text-xs mt-1">{errors.image.message}</p>
-              )}
-            </div>
-
-            {/* Email */}
-            <div>
-              <label htmlFor="email" className="block mb-2 text-sm">
-                Email address
-              </label>
-              <input
-                type="email"
-                id="email"
-                autoComplete="email"
-                placeholder="Enter Your Email Here"
-                className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-cyan-500 bg-gray-200 text-gray-900"
-                {...register("email", {
-                  required: "Email is required",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                    message: "Invalid email address",
-                  },
-                })}
-              />
-              {errors.email && (
-                <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>
-              )}
-            </div>
-
-            {/* Password */}
-            <div>
-              <label htmlFor="password" className="text-sm mb-2 block">
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                autoComplete="new-password"
-                placeholder="*******"
-                className="w-full px-3 py-2 border rounded-md border-gray-300 focus:outline-cyan-500 bg-gray-200 text-gray-900"
-                {...register("password", {
-                  required: "Password is required",
-                  minLength: {
-                    value: 6,
-                    message: "Password must be at least 6 characters",
-                  },
-                })}
-              />
-              {errors.password && (
-                <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>
-              )}
-            </div>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* Name */}
+          <div>
+            <label className="block text-sm mb-1">Name</label>
+            <input
+              type="text"
+              placeholder="Enter your name"
+              className="w-full px-3 py-2 rounded-md border border-primary focus:outline-cyan-500 text-gray-500"
+              {...register("name", {
+                required: "Name is required",
+                maxLength: { value: 30, message: "Max 30 characters" },
+              })}
+            />
+            {errors.name && (
+              <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>
+            )}
           </div>
 
-          {/* Submit Button */}
+          {/* Profile Image */}
           <div>
+            <label className="block text-sm mb-1">Profile Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              className="block w-full text-sm text-gray-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-md file:border-0
+                file:text-sm file:font-semibold
+                file:bg-cyan-50 file:text-cyan-700
+                hover:file:bg-cyan-100
+                border border-dashed border-cyan-300 rounded-md cursor-pointer
+                focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-cyan-400"
+              {...register("image", { required: "Profile image required" })}
+            />
+            {errors.image && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.image.message}
+              </p>
+            )}
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="block text-sm mb-1">Email</label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full px-3 py-2 rounded-md border border-primary focus:outline-cyan-500 text-gray-500"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[^@]+@[^@]+\.[^@]+$/,
+                  message: "Invalid email",
+                },
+              })}
+            />
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          {/* Password */}
+          <div className="relative">
+            <label className="block text-sm mb-1">Password</label>
+
+            <input
+              type={showPassword ? "text" : "password"}
+              placeholder="Enter password"
+              className="w-full px-3 py-2 pr-10 rounded-md border border-primary focus:outline-cyan-500 text-gray-700"
+              {...register("password", {
+                required: "Password required",
+                minLength: { value: 6, message: "Min 6 characters" },
+              })}
+            />
             <button
-              type="submit"
-              disabled={loading}
-              className="bg-cyan-500 w-full rounded-md py-3 text-white hover:bg-cyan-600 disabled:opacity-70 disabled:cursor-not-allowed transition"
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-[38px] text-gray-400 hover:text-cyan-500 transition"
             >
-              {loading ? (
-                <TbFidgetSpinner className="animate-spin m-auto text-xl" />
+              {showPassword ? (
+                <EyeOff className="h-5 w-5" />
               ) : (
-                "Continue"
+                <Eye className="h-5 w-5" />
               )}
             </button>
+
+            {errors.password && (
+              <p className="text-red-500 text-xs mt-1">
+                {errors.password.message}
+              </p>
+            )}
           </div>
+
+          {/* Submit */}
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-2 rounded-md bg-cyan-500 text-white hover:bg-cyan-600 disabled:opacity-70 transition"
+          >
+            {loading ? (
+              <TbFidgetSpinner className="animate-spin m-auto" />
+            ) : (
+              "Sign Up"
+            )}
+          </button>
         </form>
 
-        {/* Social Login Divider */}
-        <div className="flex items-center pt-4 space-x-1">
-          <div className="flex-1 h-px bg-gray-400"></div>
-          <p className="px-3 text-sm text-gray-600">Or signup with</p>
-          <div className="flex-1 h-px bg-gray-400"></div>
+        {/* Divider */}
+        <div className="flex items-center my-4">
+          <div className="flex-1 h-px bg-gray-300"></div>
+          <span className="px-2 text-sm text-gray-500">Or continue with</span>
+          <div className="flex-1 h-px bg-gray-300"></div>
         </div>
 
-        {/* Google Sign In */}
-        <div
+        {/* Google Sign-In */}
+        <button
           onClick={handleGoogleSignIn}
-          className="flex justify-center items-center space-x-3 border m-3 p-3 border-gray-300 rounded-md cursor-pointer hover:bg-gray-50 transition"
+          className="btn btn-outline border border-primary w-full flex items-center hover:bg-cyan-200 hover:text-cyan-600 justify-center gap-2 transition"
           disabled={loading}
         >
-          <FcGoogle size={32} />
-          <p className="font-medium">Continue with Google</p>
-        </div>
+          <FcGoogle size={24} /> Continue with Google
+        </button>
 
-        {/* Login Link */}
-        <p className="px-6 text-sm text-center text-gray-600">
+        {/* Login link */}
+        <p className="text-center text-sm mt-4 text-gray-500">
           Already have an account?{" "}
-          <Link to="/login" className="hover:underline text-cyan-600 font-medium">
+          <Link
+            to="/login"
+            className="text-cyan-600 hover:underline font-medium"
+          >
             Login
           </Link>
-          .
         </p>
       </div>
     </div>
