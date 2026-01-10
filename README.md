@@ -33,11 +33,8 @@ npm i cors dotenv express firebase-admin mongodb @stripe/react-stripe-js @stripe
 
 Muhammad Sobuj Hossain
 Live Link:
-
+https://e-tuition-bd.web.app/
 ---
 
-## Admin email
-	admin@gmail.com
-  ## password
-  123456
+
 
